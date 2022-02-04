@@ -5,6 +5,7 @@ const ig = require('instagram-node').instagram();
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 
+
 const app = express();
 //config 
 const port = process.env.PORT || 3001
@@ -13,7 +14,7 @@ ig.use({
     client_secret: process.env.IG_CLIENT_SECRET
 });
 //config de morgan 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 //config pub and views
 app.set('view engine', 'pug');
@@ -33,7 +34,7 @@ app.get('/login', (req, res) => {
 //ruta Oauth instagram 
 app.get('/instagram/authorize', (req, res) => {
     res.redirect(
-        ig.get_authorization_url('https://api-ig-node.herokuapp.com/instagram/callback', {
+        ig.get_authorization_url(process.env.IG_URI_REDIRECT, {
             scope: ['email', 'instagram_basic', 'user_profile', 'user_photos', 'user_likes']
         })
     );
@@ -44,7 +45,7 @@ app.get('/instagram/callback', (req, res) => {
     console.log('ig callback success');
     ig.authorize_user(req.query.code, process.env.IG_URI_REDIRECT, (err, result) => {
         if (err) return res.send(err);
-        res.cookie('ig_token', result.access_token);
+        res.cookie('igToken', result.access_token);
         // res.send('todo bien');
         res.redirect('/instagram/photos');
     });
@@ -53,14 +54,15 @@ app.get('/instagram/callback', (req, res) => {
 //ruta de photos
 app.get('/instagram/photos', (req, res) => {
     try {
-        // use ig token from db (that is linked to the browser session id)
-        const accessToken = req.cookies.ig_token;
+
+        const accessToken = req.cookies.igToken;
 
         ig.use({ access_token: accessToken })
 
         const userId = accessToken.split('.')[0] // ig user id, like: 1633560409
+        console.log(userId);
         ig.user_media_recent(userId, (err, result, pagination, remaining, limit) => {
-            if (err) return res.render('error');
+            if (err.code) return res.render('error');
             res.render('photos', { photos: result });
         })
     } catch (e) {
