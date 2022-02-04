@@ -1,0 +1,33 @@
+doctype html
+html
+	head
+		title= title || 'My Site'
+		meta(charset='utf8')
+		meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		block styles
+			link(rel='stylesheet' href='/style.css')
+			link(rel='stylesheet' href='//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+		block scripts
+	body
+		nav.navbar.navbar-expand-lg.navbar-light.bg-white.shadow-sm.border-bottom.mb-5
+			.container
+				a.navbar-brand.text-dark(href='/') Instagram App
+				button.navbar-toggler(type='button' data-toggle='collapse' data-target='#topNavbar' aria-controls='topNavbar' aria-expanded='false' aria-label='Toggle navigation')
+					span.navbar-toggler-icon
+				#topNavbar.collapse.navbar-collapse
+					ul.navbar-nav.ml-auto
+						li.nav-item.active
+							a.nav-link.text-dark(href='/') Home
+						li.nav-item
+							a.nav-link.text-dark(href='/login') Login
+		.container
+			.row
+				.col-md
+					block body
+			.row
+				.col-md
+					block footer		
+
+		script(src='//code.jquery.com/jquery-3.3.1.slim.min.js')
+		script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
+		script(src='//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')

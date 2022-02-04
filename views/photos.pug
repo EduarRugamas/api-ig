@@ -1,0 +1,11 @@
+extends layout
+
+block body
+
+	h3.mb-4 My IG Photos
+
+	div.card-columns.mb-5(style='column-count:4')
+		each photo in photos
+			.card.mb-3.mr-2
+				a(href= photo.link target='_blank')
+					img.card-img-top(src= photo.images.low_resolution.url)
