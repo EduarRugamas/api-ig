@@ -1,10 +1,9 @@
 const express = require('express');
 const path = require('path');
-const dotenv = require('dotenv').config;
+const dotenv = require('dotenv').config();
 const ig = require('instagram-node').instagram();
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const res = require('express/lib/response');
 
 const app = express();
 //config 
@@ -12,7 +11,6 @@ const port = process.env.PORT || 3001
 ig.use({
     client_id: process.env.IG_CLIENT_ID,
     client_secret: process.env.IG_CLIENT_SECRET
-
 });
 //config de morgan 
 app.use(morgan('dev'));
@@ -62,13 +60,13 @@ app.get('/instagram/photos', (req, res) => {
 
         const userId = accessToken.split('.')[0] // ig user id, like: 1633560409
         ig.user_media_recent(userId, (err, result, pagination, remaining, limit) => {
-            if (err) return res.render('error')
-            res.render('photos', { photos: result })
+            if (err) return res.render('error');
+            res.render('photos', { photos: result });
         })
     } catch (e) {
-        res.render('error')
+        res.render('error');
     }
-})
+});
 
 
 app.listen(port, () => {
