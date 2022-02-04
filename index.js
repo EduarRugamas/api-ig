@@ -56,7 +56,7 @@ app.get('/instagram/photos', (req, res) => {
     try {
 
         const accessToken = req.cookies.igToken;
-
+        console.log(`token: ${accessToken}`);
         ig.use({ access_token: accessToken })
 
         const userId = accessToken.split('.')[0] // ig user id, like: 1633560409
